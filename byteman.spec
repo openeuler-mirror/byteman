@@ -1,13 +1,13 @@
 Name:             byteman
 Version:          4.0.4
-Release:          3
+Release:          4 
 Summary:          Injection of track and test into Java programs
 License:          LGPLv2+
 URL:              https://byteman.jboss.org/
 Source0:          https://github.com/bytemanproject/byteman/archive/%{version}.tar.gz
 BuildArch:        noarch
 
-BuildRequires:    java-10-openjdk-devel maven-local maven-shade-plugin
+BuildRequires:    java-11-openjdk-devel maven-local maven-shade-plugin
 BuildRequires:    maven-source-plugin maven-plugin-plugin maven-plugin-bundle
 BuildRequires:    maven-assembly-plugin maven-failsafe-plugin maven-jar-plugin
 BuildRequires:    maven-surefire-plugin maven-surefire-provider-testng
@@ -98,8 +98,8 @@ done
 %mvn_package ":byteman-dtest" dtest
 
 %build
-export JAVA_HOME=/usr/lib/jvm/java-10-openjdk
-%mvn_build
+export JAVA_HOME=/usr/lib/jvm/java-11-openjdk
+%mvn_build --xmvn-javadoc
 
 %install
 %mvn_install
@@ -150,5 +150,8 @@ ln -s %{_javadir}/byteman/byteman.jar $RPM_BUILD_ROOT%{_datadir}/byteman/lib/byt
 %{_datadir}/byteman/lib/byteman-dtest.jar
 
 %changelog
+* Mon May 11 2020 Senlin Xia <xiasenlin1@huawei.com> - 4.0.4-4
+- update openjdk and use xmvn-javadoc for maven-javadoc-plugin
+
 * Tue Feb 25 2020 Songshuaishuai <songshuaishuai2@huawei.com> - 4.0.4-3
 - Package init
