@@ -1,6 +1,6 @@
 Name:             byteman
 Version:          4.0.4
-Release:          4 
+Release:          5
 Summary:          Injection of track and test into Java programs
 License:          LGPLv2+
 URL:              https://byteman.jboss.org/
@@ -16,7 +16,8 @@ BuildRequires:    maven-dependency-plugin java_cup jarjar objectweb-asm junit te
 BuildRequires:    mvn(org.jboss.modules:jboss-modules)
 Provides:         bundled(objectweb-asm) = 6.2 bundled(java_cup) = 1:0.11b-8
 Requires:         java-headless >= 1:1.8
-Patch1:           remove_submit_integration_test_verification.patch
+Patch0000:        remove_submit_integration_test_verification.patch
+Patch0001:        0001-update-ASM-to-eat-jdk12-bytecode.patch
 
 %description
 Byteman is a tool which makes it easy to trace, monitor and test the behaviour \
@@ -67,7 +68,8 @@ done
 for id in submit.TestSubmit submit.TestSubmit.compiled; do
 %pom_xpath_remove "pom:build/pom:plugins/pom:plugin[pom:artifactId='maven-failsafe-plugin']/pom:executions/pom:execution[pom:id='${id}']" agent
 done
-%patch1 -p2
+%patch0000 -p2
+%patch0001 -p1
 
 for id in submit.TestSubmit submit.TestSubmit.compiled; do
 %pom_xpath_remove "pom:build/pom:plugins/pom:plugin[pom:artifactId='maven-failsafe-plugin']/pom:executions/pom:execution[pom:id='${id}']" tests
@@ -150,6 +152,9 @@ ln -s %{_javadir}/byteman/byteman.jar $RPM_BUILD_ROOT%{_datadir}/byteman/lib/byt
 %{_datadir}/byteman/lib/byteman-dtest.jar
 
 %changelog
+* Mon Sep 14 2020 huanghaitao <huanghaitao8@huawei.com> - 4.0.4-5
+- update ASM to eat jdk bytecode
+
 * Mon May 11 2020 Senlin Xia <xiasenlin1@huawei.com> - 4.0.4-4
 - update openjdk and use xmvn-javadoc for maven-javadoc-plugin
 

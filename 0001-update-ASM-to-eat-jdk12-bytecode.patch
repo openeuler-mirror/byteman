@@ -1,0 +1,78 @@
+From 9f8cfa58eb19e1c14140054554c58af2f900971c Mon Sep 17 00:00:00 2001
+From: Andrew Dinn <adinn@redhat.com>
+Date: Wed, 24 Oct 2018 17:10:27 +0100
+Subject: [PATCH] update ASM to eat jdk12 bytecode
+
+---
+ .../main/java/org/jboss/byteman/agent/adapter/BMJSRInliner.java | 2 +-
+ .../org/jboss/byteman/agent/adapter/BMLocalScopeAdapter.java    | 2 +-
+ .../main/java/org/jboss/byteman/agent/adapter/RuleAdapter.java  | 2 +-
+ .../org/jboss/byteman/agent/check/ClassStructureAdapter.java    | 2 +-
+ pom.xml                                                         | 2 +-
+ 5 files changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/agent/src/main/java/org/jboss/byteman/agent/adapter/BMJSRInliner.java b/agent/src/main/java/org/jboss/byteman/agent/adapter/BMJSRInliner.java
+index 4627c8af..fd24681a 100644
+--- a/agent/src/main/java/org/jboss/byteman/agent/adapter/BMJSRInliner.java
++++ b/agent/src/main/java/org/jboss/byteman/agent/adapter/BMJSRInliner.java
+@@ -35,7 +35,7 @@
+ {
+     public BMJSRInliner(ClassVisitor cv)
+     {
+-        super(Opcodes.ASM7_EXPERIMENTAL, cv);
++        super(Opcodes.ASM7, cv);
+     }
+ 
+     @Override
+diff --git a/agent/src/main/java/org/jboss/byteman/agent/adapter/BMLocalScopeAdapter.java b/agent/src/main/java/org/jboss/byteman/agent/adapter/BMLocalScopeAdapter.java
+index c8197634..60d15d0f 100644
+--- a/agent/src/main/java/org/jboss/byteman/agent/adapter/BMLocalScopeAdapter.java
++++ b/agent/src/main/java/org/jboss/byteman/agent/adapter/BMLocalScopeAdapter.java
+@@ -34,7 +34,7 @@
+ {
+     public BMLocalScopeAdapter(ClassVisitor cv)
+     {
+-        super(OpcodesHelper.ASM7_EXPERIMENTAL, cv);
++        super(OpcodesHelper.ASM7, cv);
+     }
+ 
+     @Override
+diff --git a/agent/src/main/java/org/jboss/byteman/agent/adapter/RuleAdapter.java b/agent/src/main/java/org/jboss/byteman/agent/adapter/RuleAdapter.java
+index 31c52c4a..8ffc7186 100644
+--- a/agent/src/main/java/org/jboss/byteman/agent/adapter/RuleAdapter.java
++++ b/agent/src/main/java/org/jboss/byteman/agent/adapter/RuleAdapter.java
+@@ -34,7 +34,7 @@
+ {
+     protected RuleAdapter(ClassVisitor cv, TransformContext transformContext)
+     {
+-        super(Opcodes.ASM7_EXPERIMENTAL, cv);
++        super(Opcodes.ASM7, cv);
+         this.transformContext =  transformContext;
+     }
+ 
+diff --git a/agent/src/main/java/org/jboss/byteman/agent/check/ClassStructureAdapter.java b/agent/src/main/java/org/jboss/byteman/agent/check/ClassStructureAdapter.java
+index 7859252d..53fecb7c 100644
+--- a/agent/src/main/java/org/jboss/byteman/agent/check/ClassStructureAdapter.java
++++ b/agent/src/main/java/org/jboss/byteman/agent/check/ClassStructureAdapter.java
+@@ -38,7 +38,7 @@
+     private String superName = null;
+     private String outerClass = null;
+ 
+-    public ClassStructureAdapter() { super(Opcodes.ASM7_EXPERIMENTAL); }
++    public ClassStructureAdapter() { super(Opcodes.ASM7); }
+ 
+     public boolean isInterface() {
+         return isInterface;
+diff --git a/pom.xml b/pom.xml
+index f3d39858..198de97e 100644
+--- a/pom.xml
++++ b/pom.xml
+@@ -106,7 +106,7 @@
+         <!-- for testing: command line args to enable debugger and verbose trace -->
+         <debug.args>-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005 -Dorg.jboss.byteman.verbose</debug.args>
+         <!-- asm release version to use -->
+-        <asm.version>6.2</asm.version>
++        <asm.version>7.0-beta</asm.version>
+     </properties>
+ 
+     <dependencyManagement>
