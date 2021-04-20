@@ -1,6 +1,6 @@
 Name:             byteman
 Version:          4.0.4
-Release:          5
+Release:          6
 Summary:          Injection of track and test into Java programs
 License:          LGPLv2+
 URL:              https://byteman.jboss.org/
@@ -101,7 +101,7 @@ done
 
 %build
 export JAVA_HOME=/usr/lib/jvm/java-11-openjdk
-%mvn_build --xmvn-javadoc
+%mvn_build --xmvn-javadoc --skipTests
 
 %install
 %mvn_install
@@ -131,6 +131,10 @@ mkdir -p -m 755 $RPM_BUILD_ROOT%{_datadir}/byteman/contrib/jboss-modules-system
 ln -s %{_javadir}/byteman/byteman-jboss-modules-plugin.jar $RPM_BUILD_ROOT%{_datadir}/byteman/contrib/jboss-modules-system/byteman-jboss-modules-plugin.jar
 ln -s %{_javadir}/byteman/byteman.jar $RPM_BUILD_ROOT%{_datadir}/byteman/lib/byteman.jar
 
+%check
+export JAVA_HOME=/usr/lib/jvm/java-11-openjdk
+xmvn test --batch-mode --offline verify
+
 %files -f .mfiles
 %{_datadir}/byteman/lib/*
 %exclude %{_datadir}/byteman/lib/byteman-bmunit.jar
@@ -152,6 +156,9 @@ ln -s %{_javadir}/byteman/byteman.jar $RPM_BUILD_ROOT%{_datadir}/byteman/lib/byt
 %{_datadir}/byteman/lib/byteman-dtest.jar
 
 %changelog
+* Fri Apr 16 2021 maminjie <maminjie1@huawei.com> - 4.0.4-6
+- Move the test to the %check stage
+
 * Mon Sep 14 2020 huanghaitao <huanghaitao8@huawei.com> - 4.0.4-5
 - update ASM to eat jdk bytecode
 
